@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mengmeng's</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        font-size: 24px;
+        overflow: hidden;
+        user-select: none;
+      }
+      .exercise {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: 1s;
+        width: 100%;
+      }
+      .fly-out {
+        top: -100%;
+      }
+      .sentence {
+        text-align: center;
+        margin: 32px;
+      }
+      .options {
+        text-align: center;
+        margin: 24px;
+      }
+      .option {
+        border-radius: 8px;
+        box-shadow: 0 0 8px 0px lightgray;
+        display: inline-block;
+        padding: 8px 12px;
+        cursor: pointer;
+        margin: 8px;
+        transition: box-shadow 0.2s;
+        outline: none;
+        -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+      }
+      .option:hover, .option:focus {
+        box-shadow: 0 0 16px 0px lightgray;
+      }
+      .option:visited, .option:active {
+        box-shadow: 0 0 4px 0px lightgray;
+      }
+      .current-score {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 16px;
+        padding: 8px 16px;
+        border-radius: 36px;
+        background-color: #eee;
+        font-size: 18px;
+        line-height: 18px;
+      }
+      .top-score {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 16px;
+        padding: 8px 16px;
+        border-radius: 36px;
+        background-color: #eee;
+        font-size: 18px;
+        line-height: 18px;
+      }
+      .tick {
+        position: absolute;
+        right: 50%;
+        top: 50%;
+        transform: translate(50%, -50%);
+        font-size: 256px;
+        opacity: 0;
+        color: green;
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+      .visible {
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="exercise">
+      <div class="sentence"></div>
+      <div class="options"></div>
+    </div>
+
+    <div class="current-score">Streak: 0</div>
+    <div class="top-score">Top: 0</div>
+    <div class="tick">✔</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script>
+      let exercises = [
+        {
+          sentence:
+            "They worked hard but didn't come up with a solution ____ the problem.",
+          answers: ["to"],
+        },
+        {
+          sentence: "I was shocked ____ Sam's behaviour.",
+          answers: ["at", "with", "by"],
+        },
+        {
+          sentence: "She was able to visit him ____ a regular basis.",
+          answers: ["on"],
+        },
+        {
+          sentence: "He spoke ____ behalf of his colleagues.",
+          answers: ["on"],
+        },
+        {
+          sentence: "See you ____ the morning.",
+          answers: ["in", "after", "before"],
+        },
+        {
+          sentence:
+            "We are ____ good terms with our neighbours and I want it to stay like that.",
+          answers: ["on"],
+        },
+        {
+          sentence: "We'll meet ____ the evening.",
+          answers: ["in", "after"],
+        },
+        {
+          sentence: "I was born ____ 1992.",
+          answers: ["in", "after", "around"],
+        },
+        {
+          sentence: "I'll see you ____ lunch time.",
+          answers: ["at", "after"],
+        },
+        {
+          sentence: "Don't be angry ____ me. I didn't do anything wrong.",
+          answers: ["with", "at"],
+        },
+        {
+          sentence: "I am absolutely capable ____ preparing my own meal.",
+          answers: ["of"],
+        },
+        {
+          sentence: "See you ____ Tuesday!",
+          answers: ["on", "after"],
+        },
+        {
+          sentence:
+            "She was ____ high spirits because she had done well at the exam.",
+          answers: ["in"],
+        },
+        {
+          sentence:
+            "____ the time being, we'll have to do without the internet.",
+          answers: ["for"],
+        },
+        {
+          sentence:
+            "You're too early ____ our lesson. Why don't you go get some coffee and wait outside.",
+          answers: ["to"],
+        },
+        {
+          sentence: "I am very keen ____ trying to get the right job.",
+          answers: ["on"],
+        },
+        {
+          sentence: "You must pay for your tickets ____ advance.",
+          answers: ["in"],
+        },
+        {
+          sentence: "I am very keen ____ meet your mum.",
+          answers: ["to"],
+        },
+        {
+          sentence: "I'm just chilling ___ the sofa.",
+          answers: ["on", "by", "against", "without", "under"],
+        },
+        {
+          sentence: "The murderer was sentenced ___ life imprisonment.",
+          answers: ["to"],
+        },
+        {
+          sentence: "He died ___ a heart attack.",
+          answers: ["of", "from", "after", "during"],
+        },
+        {
+          sentence: "My sister is suffering ___ cancer.",
+          answers: ["from", "of", "through", "against", "without", "after"],
+        },
+        {
+          sentence: "Grisham's novels have been translated ___ many languages.",
+          answers: ["into"],
+        },
+        {
+          sentence:
+            "The guard told us to keep ___ the lawn. It has been freshly cut.",
+          answers: ["off"],
+        },
+        {
+          sentence:
+            "My boyfriend bought me some flowers, much ___ my surprise.",
+          answers: ["to"],
+        },
+      ];
+
+      let prepositions = [
+        "of",
+        "in",
+        "to",
+        "for",
+        "with",
+        "on",
+        "at",
+        "from",
+        "by",
+        "about",
+        "as",
+        "into",
+        "like",
+        "through",
+        "after",
+        "over",
+        "between",
+        "out",
+        "against",
+        "during",
+        "without",
+        "before",
+        "under",
+        "around",
+        "among",
+      ];
+
+      let sentenceEl = document.querySelector(".sentence");
+      let optionsEl = document.querySelector(".options");
+      let exerciseEl = document.querySelector(".exercise");
+      let currentScoreEl = document.querySelector(".current-score");
+      let topScoreEl = document.querySelector(".top-score");
+      let tickEl = document.querySelector(".tick");
+      let exercise;
+      let options;
+      let answer;
+      let currentScore;
+      let topScore;
+
+      init();
+
+      function init() {
+        topScore = +localStorage.getItem("topScore") || 0;
+        currentScore = +localStorage.getItem("currentScore") || 0;
+        setRandomExercise();
+      }
+
+      function setRandomExercise() {
+        exercise = _.sample(exercises);
+        sentenceEl.innerHTML = exercise.sentence;
+        options = _.sampleSize(prepositions, 6);
+        answer = _.sample(exercise.answers);
+        options = _.union(options, [answer]);
+        optionsEl.innerHTML = "";
+        _.each(options, (o) => {
+          optionsEl.innerHTML += `<div tabindex="0" class="option" onclick="check('${o}')">${o}</div>`;
+        });
+      }
+
+      function check(response) {
+        if (_.includes(exercise.answers, response)) {
+          tickEl.classList.add("visible");
+          exerciseEl.classList.add("fly-out");
+          updateScores();
+          setTimeout(() => tickEl.classList.remove("visible"), 500);
+          setTimeout(() => {
+            exerciseEl.classList.remove("fly-out");
+            setRandomExercise();
+          }, 1000);
+        } else {
+          resetScore();
+        }
+      }
+
+      function updateScores() {
+        currentScore += 1;
+        currentScoreEl.innerHTML = "Streak: " + currentScore;
+        localStorage.setItem("currentScore", currentScore);
+        console.log(currentScore, topScore)
+        if (currentScore > topScore) {
+          topScore = currentScore;
+          topScoreEl.innerHTML = "Top: " + topScore;
+          localStorage.setItem("topScore", topScore);
+        }
+      }
+
+      function resetScore() {
+        currentScore = 0;
+        currentScoreEl.innerHTML = "Streak: " + currentScore;
+        localStorage.setItem("currentScore", currentScore);
+      }
+    </script>
+  </body>
+</html>
