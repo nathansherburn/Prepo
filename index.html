@@ -256,7 +256,9 @@
 
       function init() {
         topScore = +localStorage.getItem("topScore") || 0;
+        topScoreEl.innerHTML = "Top: " + topScore;
         currentScore = +localStorage.getItem("currentScore") || 0;
+        currentScoreEl.innerHTML = "Streak: " + currentScore;
         setRandomExercise();
       }
 
