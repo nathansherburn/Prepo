@@ -14,7 +14,7 @@
         font-size: 24px;
         overflow: hidden;
         user-select: none;
-        font-family: 'Times New Roman', serif;
+        font-family: "Times New Roman", serif;
       }
       .exercise {
         position: absolute;
@@ -44,12 +44,14 @@
         margin: 8px;
         transition: box-shadow 0.2s;
         outline: none;
-        -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
       }
-      .option:hover, .option:focus {
+      .option:hover,
+      .option:focus {
         box-shadow: 0 0 16px 0px lightgray;
       }
-      .option:visited, .option:active {
+      .option:visited,
+      .option:active {
         box-shadow: 0 0 4px 0px lightgray;
       }
       .current-score {
@@ -211,9 +213,52 @@
           answers: ["to"],
         },
         {
-          sentence:
-            "There were some funny moments ___ the scenes.",
+          sentence: "There were some funny moments ___ the scenes.",
           answers: ["behind"],
+        },
+        {
+          sentence: "My friend apologized ___ being so late",
+          answers: ["for", "after"],
+        },
+        {
+          sentence: "The company is advertising ___ a new manager.",
+          answers: ["for", "with"],
+        },
+        {
+          sentence: "Most parents hope ___ a better life for their children.",
+          answers: ["for"],
+        },
+        {
+          sentence: "Gina finished the job ___ time",
+          answers: ["in", "on"],
+        },
+        {
+          sentence: "Barry completed his work ___ time to spare.",
+          answers: ["with", "without"],
+        },
+        {
+          sentence: "Jodie reached the coach ___ exactly the right time.",
+          answers: ["at"],
+        },
+        {
+          sentence: "Jodie reached the coach right ___ time.",
+          answers: ["on"],
+        },
+        {
+          sentence: "Look at the sheep ___ that field over there.",
+          answers: ["in"],
+        },
+        {
+          sentence: "There was a large sign that said the house was ___ sale.",
+          answers: ["for"],
+        },
+        {
+          sentence: "I won't eat any chocolate because I'm ___ a diet.",
+          answers: ["on"],
+        },
+        {
+          sentence: "She was grateful ___ him for the help he gave her.",
+          answers: ["to"],
         },
       ];
 
@@ -298,7 +343,6 @@
         currentScore += 1;
         currentScoreEl.innerHTML = "Streak: " + currentScore;
         localStorage.setItem("currentScore", currentScore);
-        console.log(currentScore, topScore)
         if (currentScore > topScore) {
           topScore = currentScore;
           topScoreEl.innerHTML = "Top: " + topScore;
